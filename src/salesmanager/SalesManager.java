@@ -5,6 +5,11 @@
  */
 package salesmanager;
 
+import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
+import salesmanager.models.Sale;
+import salesmanager.structures.AVL;
+
 /**
  *
  * @author danieljunior
@@ -16,6 +21,20 @@ public class SalesManager {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        AVL tree = new AVL(true, AVL.BRANCH_TYPE);
+        for (int i = 0; i < 20; i++) {
+            Sale s = new Sale();
+            s.setBranchCode((int) (Math.random() * 1000));
+            Date d1 = new Date(20, 0, 1);
+            Date d2 = new Date(27, 0, 31);
+            long random = ThreadLocalRandom.current().nextLong(d1.getTime(), d2.getTime());
+            Date date = new Date(random);
+            s.setDate(date);
+            s.setSalesmanCode((int) (Math.random() * 3));
+            s.setValue(Math.random() * 100);
+            tree.insert(s);
+        }    
+        tree.print();
     }
-    
+
 }

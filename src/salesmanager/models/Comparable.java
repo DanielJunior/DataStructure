@@ -11,4 +11,5 @@ package salesmanager.models;
  */
 public interface Comparable<E> {
     public int compareTo(E e);
+    public long getKey(int type);
 }

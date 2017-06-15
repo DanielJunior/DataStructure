@@ -6,21 +6,22 @@
 package salesmanager.models;
 
 import java.util.Date;
+import salesmanager.structures.AVL;
 
 /**
  *
  * @author danieljunior
  */
 public class Sale implements Comparable<Sale>{
-    private int branch_cod;
+    private int branchCode;
     private Date date;
-    private int salesman_cod;
+    private int salesmanCode;
     private double value;
 
     public Sale(int branch_cod, Date date, int salesman_cod, double value) {
-        this.branch_cod = branch_cod;
+        this.branchCode = branch_cod;
         this.date = date;
-        this.salesman_cod = salesman_cod;
+        this.salesmanCode = salesman_cod;
         this.value = value;
     }
 
@@ -34,12 +35,8 @@ public class Sale implements Comparable<Sale>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int getBranch_cod() {
-        return branch_cod;
-    }
-
-    public void setBranch_cod(int branch_cod) {
-        this.branch_cod = branch_cod;
+    public void setBranchCode(int branch_cod) {
+        this.branchCode = branch_cod;
     }
 
     public Date getDate() {
@@ -50,14 +47,6 @@ public class Sale implements Comparable<Sale>{
         this.date = date;
     }
 
-    public int getSalesman_cod() {
-        return salesman_cod;
-    }
-
-    public void setSalesman_cod(int salesman_cod) {
-        this.salesman_cod = salesman_cod;
-    }
-
     public double getValue() {
         return value;
     }
@@ -65,4 +54,22 @@ public class Sale implements Comparable<Sale>{
     public void setValue(double value) {
         this.value = value;
     }
+
+    public int getSalesmanCode() {
+        return salesmanCode;
+    }
+
+    public void setSalesmanCode(int salesmanCode) {
+        this.salesmanCode = salesmanCode;
+    }
+
+    @Override
+    public long getKey(int type) {
+        if(type == AVL.BRANCH_TYPE){
+            return branchCode;
+        }else{
+            return date.getTime();
+        }
+    }
+
 }
