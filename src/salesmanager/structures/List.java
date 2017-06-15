@@ -11,9 +11,10 @@ package salesmanager.structures;
  * @param <E>
  */
 public interface List<E> {
-    public void add(E e);
+    public boolean add(E e);
     public E remove(E e);
     public E find(E e);
     public boolean isEmpty();
     public int length();
+    public void print();
 }

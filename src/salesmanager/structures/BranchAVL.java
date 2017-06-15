@@ -6,26 +6,29 @@
 package salesmanager.structures;
 
 import salesmanager.models.Comparable;
+import salesmanager.models.Sale;
 
 /**
  *
  * @author danieljr
- * @param <E>
  */
-public class AVL<E extends Comparable> {
+public class BranchAVL {
 
     public static int BRANCH_TYPE = 1;
     public static int DATE_TYPE = 2;
 
-    private class Node<E extends Comparable> {
+    private class Node {
 
-        public E info = null;
+        public int branchCode;
+        public List<Sale> branchSales = null;
         public Node left = null;
         public Node right = null;
         public int heigthOver = 0;
 
-        private Node(E info) {
-            this.info = info;
+        private Node(Sale info) {
+            this.branchCode = info.getBranchCode();
+            branchSales = new LinkedList();
+            branchSales.add(info);
         }
 
         private int heigth() {
@@ -61,7 +64,7 @@ public class AVL<E extends Comparable> {
         }
 
         private void printNodeValue() {
-            System.out.print("" + info.getKey(type) + "/" + over());
+            System.out.print("" + branchCode + "/" + over());
             System.out.print('\n');
         }
 
@@ -82,6 +85,10 @@ public class AVL<E extends Comparable> {
             }
         }
 
+        private boolean insert(Sale info) {
+            return branchSales.add(info);
+        }
+
     }
 
     private Node root = null;
@@ -89,7 +96,7 @@ public class AVL<E extends Comparable> {
     private int maxOver = 0;
     private final int type;
 
-    public AVL(boolean balanceada, int type) {
+    public BranchAVL(boolean balanceada, int type) {
         this.balanced = balanceada;
         this.type = type;
     }
@@ -128,7 +135,7 @@ public class AVL<E extends Comparable> {
         return 0;
     }
 
-    public boolean insert(E info) {
+    public boolean insert(Sale info) {
         if (root == null) {
             root = new Node(info);
             return true;
@@ -138,10 +145,10 @@ public class AVL<E extends Comparable> {
 
     }
 
-    private boolean insert(Node no, E info) {
-        if (no.info.getKey(type) == info.getKey(type)) {
-            return false;
-        } else if (no.info.getKey(type) > info.getKey(type)) {
+    private boolean insert(Node no, Sale info) {
+        if (no.branchCode == info.getKey(type)) {
+            return no.insert(info);
+        } else if (no.branchCode > info.getKey(type)) {
             if (no.right == null) {
                 no.right = new Node(info);
 
@@ -176,7 +183,7 @@ public class AVL<E extends Comparable> {
 
                 return inserted;
             }
-        } else if (no.info.getKey(type) < info.getKey(type)) {
+        } else if (no.branchCode < info.getKey(type)) {
             if (no.left == null) {
                 no.left = new Node(info);
 
@@ -219,16 +226,20 @@ public class AVL<E extends Comparable> {
     private void balanceRight(Node n1, int delta1, int delta2) {
         if (delta1 > 0) {
             Node n2 = n1.right;
-            E p = (E) n1.info;
-            E u = (E) n2.info;
+            int p = n1.branchCode;
+            List pContent = n1.branchSales;
+            int u = n2.branchCode;
+            List uContent = n2.branchSales;
             Node t1 = n2.right;
             Node t2 = n2.left;
             Node t3 = n1.left;
 
-            n1.info = u;
+            n1.branchCode = u;
+            n1.branchSales = uContent;
             n1.right = t1;
             n1.left = n2;
-            n2.info = p;
+            n2.branchCode = p;
+            n2.branchSales = pContent;
             n2.right = t2;
             n2.left = t3;
 
@@ -237,21 +248,27 @@ public class AVL<E extends Comparable> {
         } else if (delta1 < 0) {
             Node n2 = n1.right;
             Node n3 = n2.left;
-            E p = (E) n1.info;
-            E u = (E) n2.info;
-            E v = (E) n3.info;
+            int p = n1.branchCode;
+            List pContent = n1.branchSales;
+            int u = n2.branchCode;
+            List uContent = n2.branchSales;
+            int v = n3.branchCode;
+            List vContent = n3.branchSales;
             Node t1 = n2.right;
             Node t2 = n3.right;
             Node t3 = n3.left;
             Node t4 = n1.left;
 
-            n1.info = v;
+            n1.branchCode = v;
+            n1.branchSales = vContent;
             n1.right = n2;
             n1.left = n3;
-            n2.info = u;
+            n2.branchCode = u;
+            n2.branchSales = uContent;
             n2.right = t1;
             n2.left = t2;
-            n3.info = p;
+            n3.branchCode = p;
+            n3.branchSales = pContent;
             n3.right = t3;
             n3.left = t4;
 
@@ -272,16 +289,20 @@ public class AVL<E extends Comparable> {
     private void balanceLeft(Node n1, int delta, int delta2) {
         if (delta < 0) {
             Node n2 = n1.left;
-            E p = (E) n1.info;
-            E z = (E) n2.info;
+            int p = n1.branchCode;
+            List pContent = n1.branchSales;
+            int z = n2.branchCode;
+            List zContent = n2.branchSales;
             Node t1 = n1.right;
             Node t2 = n2.right;
             Node t3 = n2.left;
 
-            n1.info = z;
+            n1.branchCode = z;
+            n1.branchSales = zContent;
             n1.right = n2;
             n1.left = t3;
-            n2.info = p;
+            n2.branchCode = p;
+            n2.branchSales = pContent;
             n2.right = t1;
             n2.left = t2;
 
@@ -290,21 +311,27 @@ public class AVL<E extends Comparable> {
         } else if (delta > 0) {
             Node n2 = n1.left;
             Node n3 = n2.right;
-            E p = (E) n1.info;
-            E z = (E) n2.info;
-            E y = (E) n3.info;
+            int p = n1.branchCode;
+            List pContent = n1.branchSales;
+            int z = n2.branchCode;
+            List zContent = n2.branchSales;
+            int y = n3.branchCode;
+            List yContent = n3.branchSales;
             Node t1 = n1.right;
             Node t2 = n3.right;
             Node t3 = n3.left;
             Node t4 = n2.left;
 
-            n1.info = y;
+            n1.branchCode = y;
+            n1.branchSales = yContent;
             n1.right = n2;
             n1.left = n3;
-            n2.info = p;
+            n2.branchCode = p;
+            n2.branchSales = pContent;
             n2.right = t1;
             n2.left = t2;
-            n3.info = z;
+            n3.branchCode = z;
+            n3.branchSales = zContent;
             n3.right = t3;
             n3.left = t4;
 
@@ -322,7 +349,7 @@ public class AVL<E extends Comparable> {
         }
     }
 
-    public E search(int chave) {
+    public List search(int chave) {
         if (root != null) {
             return search(root, chave);
         } else {
@@ -330,12 +357,12 @@ public class AVL<E extends Comparable> {
         }
     }
 
-    private E search(Node no, int chave) {
-        if (no.info.getKey(type) == chave) {
-            return (E) no.info;
-        } else if (no.info.getKey(type) > chave && no.right != null) {
+    private List search(Node no, int chave) {
+        if (no.branchCode == chave) {
+            return no.branchSales;
+        } else if (no.branchCode > chave && no.right != null) {
             return search(no.right, chave);
-        } else if (no.info.getKey(type) < chave && no.right != null) {
+        } else if (no.branchCode < chave && no.right != null) {
             return search(no.left, chave);
         } else {
             return null;

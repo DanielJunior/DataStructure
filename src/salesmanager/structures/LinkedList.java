@@ -10,12 +10,12 @@ package salesmanager.structures;
  * @author danieljunior
  * @param <E>
  */
-public class LinkedList<E extends Comparable> implements List<E> {
+public class LinkedList<E extends salesmanager.models.Comparable<E>> implements List<E> {
 
     private int length;
     private Node first;
 
-    private class Node<E extends Comparable> {
+    private class Node<E extends salesmanager.models.Comparable<E>> {
 
         E content;
         Node next;
@@ -35,28 +35,29 @@ public class LinkedList<E extends Comparable> implements List<E> {
     }
 
     @Override
-    public void add(E e) {
-        if (first == null && first.content.compareTo(e) != 0) {
+    public boolean add(E e) {
+        if (first == null) {
             Node<E> tmp = new Node(e);
             first = tmp;
             length++;
+            return true;
         } else if (first.content.compareTo(e) == 0) {
-            return;
+            return false;
         } else {
-            add(first, e);
+            return add(first, e);
         }
     }
 
-    private void add(Node first, E e) {
+    private boolean add(Node first, E e) {
         if (first.next == null && first.content.compareTo(e) != 0) {
             Node<E> tmp = new Node<>(e);
             first.next = tmp;
             length++;
-            return;
+            return true;
         } else if (first.content.compareTo(e) == 0) {
-            return;
+            return false;
         }
-        add(first.next, e);
+        return add(first.next, e);
     }
 
     @Override
@@ -113,6 +114,15 @@ public class LinkedList<E extends Comparable> implements List<E> {
     @Override
     public int length() {
         return length;
+    }
+
+    @Override
+    public void print() {
+        Node tmp = first;
+        while(tmp != null){
+            System.out.println(tmp.content.toString());
+            tmp = tmp.next;
+        }
     }
 
 }

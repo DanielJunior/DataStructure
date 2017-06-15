@@ -6,13 +6,14 @@
 package salesmanager.models;
 
 import java.util.Date;
-import salesmanager.structures.AVL;
+import salesmanager.structures.BranchAVL;
 
 /**
  *
  * @author danieljunior
  */
-public class Sale implements Comparable<Sale>{
+public class Sale implements Comparable<Sale> {
+
     private int branchCode;
     private Date date;
     private int salesmanCode;
@@ -27,16 +28,22 @@ public class Sale implements Comparable<Sale>{
 
     public Sale() {
     }
-    
-    
 
     @Override
     public int compareTo(Sale e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.branchCode == e.getBranchCode() && this.salesmanCode == e.getSalesmanCode()
+                && this.value == e.getValue() && this.date.equals(e.getDate())) {
+            return 0;
+        }
+        return 1;
     }
 
-    public void setBranchCode(int branch_cod) {
-        this.branchCode = branch_cod;
+    public void setBranchCode(int branchCode) {
+        this.branchCode = branchCode;
+    }
+
+    public int getBranchCode() {
+        return branchCode;
     }
 
     public Date getDate() {
@@ -65,11 +72,18 @@ public class Sale implements Comparable<Sale>{
 
     @Override
     public long getKey(int type) {
-        if(type == AVL.BRANCH_TYPE){
+        if (type == BranchAVL.BRANCH_TYPE) {
             return branchCode;
-        }else{
+        } else {
             return date.getTime();
         }
     }
+
+    @Override
+    public String toString() {
+        return "Sale{" + "branchCode=" + branchCode + ", date=" + date + ", salesmanCode=" + salesmanCode + ", value=" + value + '}';
+    }
+    
+    
 
 }
