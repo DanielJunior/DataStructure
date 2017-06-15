@@ -381,10 +381,10 @@ public class DateAVL {
         if (node.dateTime >= DateUtils.getTime(date1) && node.dateTime <= DateUtils.getTime(date2)) {
             LinkedList list = (LinkedList) node.salesPerDate;
             if (node.right != null) {
-                list.merge(searchDateRange(node.right, date1, date2));
+               list = (LinkedList) list.merge(searchDateRange(node.right, date1, date2));
             }
             if (node.left != null) {
-                list.merge(searchDateRange(node.left, date1, date2));
+               list = (LinkedList) list.merge(searchDateRange(node.left, date1, date2));
             }
             return list;
         } else if (node.dateTime > DateUtils.getTime(date2) && node.right != null) {

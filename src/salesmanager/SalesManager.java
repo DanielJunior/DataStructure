@@ -38,13 +38,13 @@ public class SalesManager {
         System.out.println("Sold from branchs 0,1 in 10/16 - 12/16: " + intersect);
         
         System.out.println("*************************");
-        branchsSold = storage.getTotalSoldFromBranchs(0, 2);
-        seasonSold = storage.getTotalSoldFromSeason("06/16", "12/16");
-        intersect = storage.getTotalSoldFromBranchsAndSeason(0, 2, "06/16", "12/16");
+        branchsSold = storage.getTotalSoldFromBranchs(0, 1);
+        seasonSold = storage.getTotalSoldFromSeason("09/16", "12/16");
+        intersect = storage.getTotalSoldFromBranchsAndSeason(0, 1, "09/16", "12/16");
 
         System.out.println("Sold from branchs 0,2: " + branchsSold);
-        System.out.println("Sold from date 06/16 - 12/16: " + seasonSold);
-        System.out.println("Sold from branchs 0,1 in 06/16 - 12/16: " + intersect);
+        System.out.println("Sold from date 09/16 - 12/16: " + seasonSold);
+        System.out.println("Sold from branchs 0,1 in 09/16 - 12/16: " + intersect);
         
     }
 

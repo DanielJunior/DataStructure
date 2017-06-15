@@ -381,10 +381,10 @@ public class BranchAVL {
         if (node.branchCode >= begin && node.branchCode <= end) {
             LinkedList list = (LinkedList) node.branchSales;
             if (node.right != null) {
-                list.merge(searchBranchRange(node.right, begin, end));
+                list = (LinkedList) list.merge(searchBranchRange(node.right, begin, end));
             }
             if (node.left != null) {
-                list.merge(searchBranchRange(node.left, begin, end));
+                list = (LinkedList) list.merge(searchBranchRange(node.left, begin, end));
             }
             return list;
         } else if (node.branchCode > end && node.right != null) {

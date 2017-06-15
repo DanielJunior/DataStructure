@@ -30,13 +30,13 @@ public class Storage {
 
     public double getTotalSoldFromBranchs(int branchCode1, int branchCode2) {
         List resp = branchAVL.searchBranchRange(branchCode1, branchCode2);
-        resp.print();
+//        resp.print();
         return resp != null ? resp.sum() : 0;
     }
 
     public double getTotalSoldFromSeason(String date1, String date2) {
         List resp = dateAVL.searchDateRange(date1, date2);
-        resp.print();
+//        resp.print();
         return resp != null ? resp.sum() : 0;
     }
 
@@ -44,7 +44,7 @@ public class Storage {
         List branchSales = branchAVL.searchBranchRange(branchCode1, branchCode2);
         List datesSales = dateAVL.searchDateRange(date1, date2);
         List intersect = branchSales.intersect(datesSales);
-        intersect.print();
+//        intersect.print();
         return intersect != null ? intersect.sum() : 0;
     }
 
