@@ -42,7 +42,7 @@ public class SalesManager {
         seasonSold = storage.getTotalSoldFromSeason("09/16", "12/16");
         intersect = storage.getTotalSoldFromBranchsAndSeason(0, 1, "09/16", "12/16");
 
-        System.out.println("Sold from branchs 0,2: " + branchsSold);
+        System.out.println("Sold from branchs 0,1: " + branchsSold);
         System.out.println("Sold from date 09/16 - 12/16: " + seasonSold);
         System.out.println("Sold from branchs 0,1 in 09/16 - 12/16: " + intersect);
         
