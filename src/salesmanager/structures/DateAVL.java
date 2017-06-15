@@ -12,23 +12,23 @@ import salesmanager.models.Sale;
  *
  * @author danieljr
  */
-public class BranchAVL {
+public class DateAVL {
 
     public static int BRANCH_TYPE = 1;
     public static int DATE_TYPE = 2;
 
     private class Node {
 
-        public int branchCode;
-        public List<Sale> branchSales = null;
+        public long dateTime;
+        public List<Sale> salesPerDate = null;
         public Node left = null;
         public Node right = null;
         public int heigthOver = 0;
 
         private Node(Sale info) {
-            this.branchCode = info.getBranchCode();
-            branchSales = new LinkedList();
-            branchSales.add(info);
+            this.dateTime = info.getDate().getTime();
+            salesPerDate = new LinkedList();
+            salesPerDate.add(info);
         }
 
         private int heigth() {
@@ -64,7 +64,7 @@ public class BranchAVL {
         }
 
         private void printNodeValue() {
-            System.out.print("" + branchCode + "/" + over());
+            System.out.print("" + dateTime + "/" + over());
             System.out.print('\n');
         }
 
@@ -86,7 +86,7 @@ public class BranchAVL {
         }
 
         private boolean insert(Sale info) {
-            return branchSales.add(info);
+            return salesPerDate.add(info);
         }
 
     }
@@ -96,7 +96,7 @@ public class BranchAVL {
     private int maxOver = 0;
     private final int type;
 
-    public BranchAVL(boolean balanceada, int type) {
+    public DateAVL(boolean balanceada, int type) {
         this.balanced = balanceada;
         this.type = type;
     }
@@ -146,9 +146,9 @@ public class BranchAVL {
     }
 
     private boolean insert(Node no, Sale info) {
-        if (no.branchCode == info.getKey(type)) {
+        if (no.dateTime == info.getKey(type)) {
             return no.insert(info);
-        } else if (no.branchCode > info.getKey(type)) {
+        } else if (no.dateTime > info.getKey(type)) {
             if (no.right == null) {
                 no.right = new Node(info);
 
@@ -183,7 +183,7 @@ public class BranchAVL {
 
                 return inserted;
             }
-        } else if (no.branchCode < info.getKey(type)) {
+        } else if (no.dateTime < info.getKey(type)) {
             if (no.left == null) {
                 no.left = new Node(info);
 
@@ -226,20 +226,20 @@ public class BranchAVL {
     private void balanceRight(Node n1, int delta1, int delta2) {
         if (delta1 > 0) {
             Node n2 = n1.right;
-            int p = n1.branchCode;
-            List pContent = n1.branchSales;
-            int u = n2.branchCode;
-            List uContent = n2.branchSales;
+            long p = n1.dateTime;
+            List pContent = n1.salesPerDate;
+            long u = n2.dateTime;
+            List uContent = n2.salesPerDate;
             Node t1 = n2.right;
             Node t2 = n2.left;
             Node t3 = n1.left;
 
-            n1.branchCode = u;
-            n1.branchSales = uContent;
+            n1.dateTime = u;
+            n1.salesPerDate = uContent;
             n1.right = t1;
             n1.left = n2;
-            n2.branchCode = p;
-            n2.branchSales = pContent;
+            n2.dateTime = p;
+            n2.salesPerDate = pContent;
             n2.right = t2;
             n2.left = t3;
 
@@ -248,27 +248,27 @@ public class BranchAVL {
         } else if (delta1 < 0) {
             Node n2 = n1.right;
             Node n3 = n2.left;
-            int p = n1.branchCode;
-            List pContent = n1.branchSales;
-            int u = n2.branchCode;
-            List uContent = n2.branchSales;
-            int v = n3.branchCode;
-            List vContent = n3.branchSales;
+            long p = n1.dateTime;
+            List pContent = n1.salesPerDate;
+            long u = n2.dateTime;
+            List uContent = n2.salesPerDate;
+            long v = n3.dateTime;
+            List vContent = n3.salesPerDate;
             Node t1 = n2.right;
             Node t2 = n3.right;
             Node t3 = n3.left;
             Node t4 = n1.left;
 
-            n1.branchCode = v;
-            n1.branchSales = vContent;
+            n1.dateTime = v;
+            n1.salesPerDate = vContent;
             n1.right = n2;
             n1.left = n3;
-            n2.branchCode = u;
-            n2.branchSales = uContent;
+            n2.dateTime = u;
+            n2.salesPerDate = uContent;
             n2.right = t1;
             n2.left = t2;
-            n3.branchCode = p;
-            n3.branchSales = pContent;
+            n3.dateTime = p;
+            n3.salesPerDate = pContent;
             n3.right = t3;
             n3.left = t4;
 
@@ -289,20 +289,20 @@ public class BranchAVL {
     private void balanceLeft(Node n1, int delta, int delta2) {
         if (delta < 0) {
             Node n2 = n1.left;
-            int p = n1.branchCode;
-            List pContent = n1.branchSales;
-            int z = n2.branchCode;
-            List zContent = n2.branchSales;
+            long p = n1.dateTime;
+            List pContent = n1.salesPerDate;
+            long z = n2.dateTime;
+            List zContent = n2.salesPerDate;
             Node t1 = n1.right;
             Node t2 = n2.right;
             Node t3 = n2.left;
 
-            n1.branchCode = z;
-            n1.branchSales = zContent;
+            n1.dateTime = z;
+            n1.salesPerDate = zContent;
             n1.right = n2;
             n1.left = t3;
-            n2.branchCode = p;
-            n2.branchSales = pContent;
+            n2.dateTime = p;
+            n2.salesPerDate = pContent;
             n2.right = t1;
             n2.left = t2;
 
@@ -311,27 +311,27 @@ public class BranchAVL {
         } else if (delta > 0) {
             Node n2 = n1.left;
             Node n3 = n2.right;
-            int p = n1.branchCode;
-            List pContent = n1.branchSales;
-            int z = n2.branchCode;
-            List zContent = n2.branchSales;
-            int y = n3.branchCode;
-            List yContent = n3.branchSales;
+            long p = n1.dateTime;
+            List pContent = n1.salesPerDate;
+            long z = n2.dateTime;
+            List zContent = n2.salesPerDate;
+            long y = n3.dateTime;
+            List yContent = n3.salesPerDate;
             Node t1 = n1.right;
             Node t2 = n3.right;
             Node t3 = n3.left;
             Node t4 = n2.left;
 
-            n1.branchCode = y;
-            n1.branchSales = yContent;
+            n1.dateTime = y;
+            n1.salesPerDate = yContent;
             n1.right = n2;
             n1.left = n3;
-            n2.branchCode = p;
-            n2.branchSales = pContent;
+            n2.dateTime = p;
+            n2.salesPerDate = pContent;
             n2.right = t1;
             n2.left = t2;
-            n3.branchCode = z;
-            n3.branchSales = zContent;
+            n3.dateTime = z;
+            n3.salesPerDate = zContent;
             n3.right = t3;
             n3.left = t4;
 
@@ -358,39 +358,12 @@ public class BranchAVL {
     }
 
     private List search(Node no, int chave) {
-        if (no.branchCode == chave) {
-            return no.branchSales;
-        } else if (no.branchCode > chave && no.right != null) {
+        if (no.dateTime == chave) {
+            return no.salesPerDate;
+        } else if (no.dateTime > chave && no.right != null) {
             return search(no.right, chave);
-        } else if (no.branchCode < chave && no.left != null) {
+        } else if (no.dateTime < chave && no.right != null) {
             return search(no.left, chave);
-        } else {
-            return null;
-        }
-    }
-
-    public List searchBranchRange(int begin, int end) {
-        if (root != null) {
-            return searchBranchRange(root, begin, end);
-        } else {
-            return null;
-        }
-    }
-
-    private List searchBranchRange(Node node, int begin, int end) {
-        if (node.branchCode >= begin && node.branchCode <= end) {
-            LinkedList list = (LinkedList) node.branchSales;
-            if (node.right != null) {
-                list.merge(searchBranchRange(node.right, begin, end));
-            }
-            if (node.left != null) {
-                list.merge(searchBranchRange(node.left, begin, end));
-            }
-            return list;
-        } else if (node.branchCode > end && node.right != null) {
-            return searchBranchRange(node.right, begin, end);
-        } else if (node.branchCode < begin && node.left != null) {
-            return searchBranchRange(node.left, begin, end);
         } else {
             return null;
         }

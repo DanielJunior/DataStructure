@@ -17,4 +17,6 @@ public interface List<E> {
     public boolean isEmpty();
     public int length();
     public void print();
+    public void merge(List list);
+    public double sum();
 }

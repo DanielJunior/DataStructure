@@ -5,11 +5,9 @@
  */
 package salesmanager;
 
-import java.util.Date;
-import java.util.concurrent.ThreadLocalRandom;
 import salesmanager.models.Sale;
-import salesmanager.structures.BranchAVL;
-import salesmanager.structures.List;
+import salesmanager.storage.Storage;
+import salesmanager.utils.DateUtils;
 
 /**
  *
@@ -22,22 +20,16 @@ public class SalesManager {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        BranchAVL tree = new BranchAVL(true, BranchAVL.BRANCH_TYPE);
-        for (int i = 0; i < 20; i++) {
+        Storage storage = new Storage();
+        for (int i = 0; i < 100; i++) {
             Sale s = new Sale();
-            s.setBranchCode((int) (Math.random() * 3));
-            Date d1 = new Date(20, 0, 1);
-            Date d2 = new Date(27, 0, 31);
-            long random = ThreadLocalRandom.current().nextLong(d1.getTime(), d2.getTime());
-            Date date = new Date(random);
-            s.setDate(date);
+            s.setBranchCode((int) (Math.random() * 5));
+            s.setDate(DateUtils.getRandomDate("01/16", "12/16"));
             s.setSalesmanCode((int) (Math.random() * 3));
             s.setValue(Math.random() * 100);
-            tree.insert(s);
-        }    
-        tree.print();
-        List branch0 = tree.search(0);
-        branch0.print();
+            storage.insert(s);
+        }
+        System.out.println("Sold from branchs 0,1: " + storage.getTotalSoldFromBranchs(0, 1));
     }
 
 }

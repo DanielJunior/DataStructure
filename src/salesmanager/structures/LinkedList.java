@@ -14,6 +14,7 @@ public class LinkedList<E extends salesmanager.models.Comparable<E>> implements 
 
     private int length;
     private Node first;
+    private Node last;
 
     private class Node<E extends salesmanager.models.Comparable<E>> {
 
@@ -31,7 +32,7 @@ public class LinkedList<E extends salesmanager.models.Comparable<E>> implements 
 
     public LinkedList() {
         this.length = 0;
-        first = null;
+        first = last = null;
     }
 
     @Override
@@ -39,6 +40,7 @@ public class LinkedList<E extends salesmanager.models.Comparable<E>> implements 
         if (first == null) {
             Node<E> tmp = new Node(e);
             first = tmp;
+            last = tmp;
             length++;
             return true;
         } else if (first.content.compareTo(e) == 0) {
@@ -52,6 +54,7 @@ public class LinkedList<E extends salesmanager.models.Comparable<E>> implements 
         if (first.next == null && first.content.compareTo(e) != 0) {
             Node<E> tmp = new Node<>(e);
             first.next = tmp;
+            last = tmp;
             length++;
             return true;
         } else if (first.content.compareTo(e) == 0) {
@@ -119,10 +122,29 @@ public class LinkedList<E extends salesmanager.models.Comparable<E>> implements 
     @Override
     public void print() {
         Node tmp = first;
-        while(tmp != null){
+        while (tmp != null) {
             System.out.println(tmp.content.toString());
             tmp = tmp.next;
         }
     }
 
+    @Override
+    public void merge(List list) {
+        if (list != null) {
+            LinkedList another = (LinkedList) list;
+            last.next = another.first;
+            last = last.next;
+        }
+    }
+
+    @Override
+    public double sum() {
+        double resp = 0;
+        Node tmp = first;
+        while (tmp != null) {
+            resp += tmp.content.getValue();
+            tmp = tmp.next;
+        }
+        return resp;
+    }
 }
