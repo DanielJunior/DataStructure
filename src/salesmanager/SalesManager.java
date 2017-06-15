@@ -23,13 +23,29 @@ public class SalesManager {
         Storage storage = new Storage();
         for (int i = 0; i < 100; i++) {
             Sale s = new Sale();
-            s.setBranchCode((int) (Math.random() * 5));
+            s.setBranchCode((int) (Math.random() * 3));
             s.setDate(DateUtils.getRandomDate("01/16", "12/16"));
             s.setSalesmanCode((int) (Math.random() * 3));
             s.setValue(Math.random() * 100);
             storage.insert(s);
         }
-        System.out.println("Sold from branchs 0,1: " + storage.getTotalSoldFromBranchs(0, 1));
+        double branchsSold = storage.getTotalSoldFromBranchs(0, 1);
+        double seasonSold = storage.getTotalSoldFromSeason("10/16", "12/16");
+        double intersect = storage.getTotalSoldFromBranchsAndSeason(0, 1, "10/16", "12/16");
+
+        System.out.println("Sold from branchs 0,1: " + branchsSold);
+        System.out.println("Sold from date 10/16 - 12/16: " + seasonSold);
+        System.out.println("Sold from branchs 0,1 in 10/16 - 12/16: " + intersect);
+        
+        System.out.println("*************************");
+        branchsSold = storage.getTotalSoldFromBranchs(0, 2);
+        seasonSold = storage.getTotalSoldFromSeason("06/16", "12/16");
+        intersect = storage.getTotalSoldFromBranchsAndSeason(0, 2, "06/16", "12/16");
+
+        System.out.println("Sold from branchs 0,2: " + branchsSold);
+        System.out.println("Sold from date 06/16 - 12/16: " + seasonSold);
+        System.out.println("Sold from branchs 0,1 in 06/16 - 12/16: " + intersect);
+        
     }
 
 }

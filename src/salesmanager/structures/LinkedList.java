@@ -12,11 +12,11 @@ package salesmanager.structures;
  */
 public class LinkedList<E extends salesmanager.models.Comparable<E>> implements List<E> {
 
-    private int length;
-    private Node first;
-    private Node last;
+    int length;
+    Node first;
+    Node last;
 
-    private class Node<E extends salesmanager.models.Comparable<E>> {
+    class Node<E extends salesmanager.models.Comparable<E>> {
 
         E content;
         Node next;
@@ -32,7 +32,8 @@ public class LinkedList<E extends salesmanager.models.Comparable<E>> implements 
 
     public LinkedList() {
         this.length = 0;
-        first = last = null;
+        first = null;
+        last = null;
     }
 
     @Override
@@ -98,15 +99,18 @@ public class LinkedList<E extends salesmanager.models.Comparable<E>> implements 
         return find(first.next, e);
     }
 
-    private E find(Node first, E e) {
-        if (first == null) {
+    private E find(Node node, E e) {
+        if (node == null) {
             return null;
-        } else if (first.next != null && first.next.content.compareTo(e) == 0) {
-            E tmp = (E) first.next.content;
-            first.next = first.next.next;
-            return tmp;
+        } else {
+            while (node != null) {
+                if (node.content.compareTo(e) == 0) {
+                    return (E) node.content;
+                }
+                node = node.next;
+            }
+            return null;
         }
-        return remove(first.next, e);
     }
 
     @Override
@@ -129,11 +133,22 @@ public class LinkedList<E extends salesmanager.models.Comparable<E>> implements 
     }
 
     @Override
-    public void merge(List list) {
+    public List merge(List list) {
         if (list != null) {
-            LinkedList another = (LinkedList) list;
-            last.next = another.first;
-            last = last.next;
+            List resp = new LinkedList();
+            Node tmp = first;
+            while (tmp != null) {
+                resp.add(tmp.content);
+                tmp = tmp.next;
+            }
+            tmp = list.getFirstNode();
+            while (tmp != null) {
+                resp.add(tmp.content);
+                tmp = tmp.next;
+            }
+            return resp;
+        } else {
+            return this;
         }
     }
 
@@ -147,4 +162,24 @@ public class LinkedList<E extends salesmanager.models.Comparable<E>> implements 
         }
         return resp;
     }
+
+    @Override
+    public List intersect(List another
+    ) {
+        List<E> resp = new LinkedList();
+        Node tmp = first;
+        while (tmp != null) {
+            if (another.find(tmp.content) != null) {
+                resp.add((E) tmp.content);
+            }
+            tmp = tmp.next;
+        }
+        return resp;
+    }
+
+    @Override
+    public Node getFirstNode() {
+        return first;
+    }
+
 }

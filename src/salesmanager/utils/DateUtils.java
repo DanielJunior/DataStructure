@@ -18,9 +18,10 @@ import java.util.logging.Logger;
  */
 public class DateUtils {
 
+    public static SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
+
     public static Date getRandomDate(String begin, String end) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
             Date d1;
             d1 = sdf.parse(begin);
             Date d2 = sdf.parse(end);
@@ -34,5 +35,16 @@ public class DateUtils {
             Logger.getLogger(DateUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new Date();
+    }
+
+    public static long getTime(String date) {
+        try {
+            Date d1;
+            d1 = sdf.parse(date);
+            return d1.getTime();
+        } catch (ParseException ex) {
+            Logger.getLogger(DateUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 }

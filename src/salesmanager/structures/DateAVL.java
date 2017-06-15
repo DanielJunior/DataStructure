@@ -5,8 +5,8 @@
  */
 package salesmanager.structures;
 
-import salesmanager.models.Comparable;
 import salesmanager.models.Sale;
+import salesmanager.utils.DateUtils;
 
 /**
  *
@@ -364,6 +364,33 @@ public class DateAVL {
             return search(no.right, chave);
         } else if (no.dateTime < chave && no.right != null) {
             return search(no.left, chave);
+        } else {
+            return null;
+        }
+    }
+
+    public List searchDateRange(String date1, String date2) {
+        if (root != null) {
+            return searchDateRange(root, date1, date2);
+        } else {
+            return null;
+        }
+    }
+
+    private List searchDateRange(Node node, String date1, String date2) {
+        if (node.dateTime >= DateUtils.getTime(date1) && node.dateTime <= DateUtils.getTime(date2)) {
+            LinkedList list = (LinkedList) node.salesPerDate;
+            if (node.right != null) {
+                list.merge(searchDateRange(node.right, date1, date2));
+            }
+            if (node.left != null) {
+                list.merge(searchDateRange(node.left, date1, date2));
+            }
+            return list;
+        } else if (node.dateTime > DateUtils.getTime(date2) && node.right != null) {
+            return searchDateRange(node.right, date1, date2);
+        } else if (node.dateTime < DateUtils.getTime(date1) && node.left != null) {
+            return searchDateRange(node.left, date1, date2);
         } else {
             return null;
         }

@@ -5,6 +5,8 @@
  */
 package salesmanager.structures;
 
+import salesmanager.structures.LinkedList.Node;
+
 /**
  *
  * @author danieljunior
@@ -17,6 +19,8 @@ public interface List<E> {
     public boolean isEmpty();
     public int length();
     public void print();
-    public void merge(List list);
+    public List merge(List list);
     public double sum();
+    public List intersect(List another);
+    Node getFirstNode();
 }
